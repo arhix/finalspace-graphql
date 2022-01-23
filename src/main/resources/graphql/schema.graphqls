@@ -1,0 +1,53 @@
+schema {
+    query: Query
+}
+
+type Query {
+    characters: [Character]
+    character(id: Int!): Character
+    episodes: [Episode]
+    episode(id:Int!): Episode
+    locations: [Location]
+    location(id:Int!): Location
+    quotes: [Quote]
+}
+
+type Character {
+    id: Int!
+    name: String!
+    status: String
+    species: String
+    gender: String
+    hair: String
+    origin: String
+    abilities: [String]
+    alias: [String]
+    img_url: String
+}
+
+type Location {
+    id: Int!
+    name: String!
+    type: String
+    img_url: String
+    notable_residents: [String]
+    inhabitants: [String]
+}
+
+type Episode {
+    id: Int!
+    name: String!
+    air_date: String
+    director: String
+    writer: String
+    img_url: String
+    characters: [String]
+}
+
+type Quote {
+    id: Int!
+    quote: String
+    by: String
+    character: String
+    image: String
+}

@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0-M1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "io.github.kobylynskyi.graphql.codegen" version "5.3.0"
+	id 'java'
+}
+
+group = 'com.arhix'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2.0' // NEW
+	implementation 'org.springframework.boot:spring-boot-starter-graphql'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation "javax.validation:validation-api:2.0.1.Final"
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+}
+
+graphqlCodegen {
+	graphqlSchemaPaths = ["$projectDir/src/main/resources/graphql/schema.graphqls".toString()]
+	outputDir = new File("$buildDir/generated")
+	apiPackageName = "com.arhix.finalspace.api"
+	modelPackageName = "com.arhix.finalspace.model"
+	packageName = "com.arhix.finalspace"
+	modelNameSuffix = "Entity"
+}
+
+// Automatically generate GraphQL code on project build:
+compileJava.dependsOn 'graphqlCodegen'
+
+// Add generated sources to your project source sets:
+sourceSets.main.java.srcDir "$buildDir/generated"
